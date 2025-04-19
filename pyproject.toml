@@ -1,29 +1,143 @@
 [project]
 name = "epirust"
 version = "0.1.0"
-description = "Rust-based epidemiological analysis toolkit"
-authors = [{ name = "Rob Ford", email = "you@example.com" }]
+description = "High-performance epidemiological analysis toolkit"
 readme = "README.md"
-license = { file = "LICENSE" }
-requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [
+    { name = "Rob Ford", email = "rob@example.com" }
+]
+keywords = ["epidemiology", "statistics", "causal-inference", "rust", "high-performance"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Rust",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+    "Topic :: Scientific/Engineering :: Bio-Informatics"
+]
+dependencies = [
+    "pandas>=2.0.0",
+    "numpy>=1.24.0",
+    "requests>=2.31.0",
+    "tqdm>=4.66.0",
+    "pyarrow>=14.0.1",
+    "fastparquet>=2023.10.1",
+    "jupyter>=1.0.0",
+    "nbformat>=5.9.0",
+    "nbconvert>=7.16.0",
+    "pyyaml>=6.0.1",
+    "scipy>=1.12.0",
+    "statsmodels>=0.14.1",
+    "scikit-learn>=1.4.0",
+    "lifelines>=0.27.8",
+    "geopandas>=0.14.3",
+    "pyproj>=3.6.1",
+    "folium>=0.15.1",
+    "biopython>=1.83",
+    "pywavelets>=1.5.0",
+    "networkx>=3.2.1",
+    "pygraphviz>=1.12",
+    "matplotlib>=3.8.0",
+    "seaborn>=0.13.2"
+]
+requires-python = ">=3.11"
+
+[project.urls]
+Homepage = "https://github.com/robandrewford/epirust"
+Documentation = "https://docs.rs/epirust"
+Repository = "https://github.com/robandrewford/epirust.git"
+Issues = "https://github.com/robandrewford/epirust/issues"
+Changelog = "https://github.com/robandrewford/epirust/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-xdist>=3.3.0",
+    "ruff>=0.1.0",
+    "black>=23.12.0",
+    "mypy>=1.8.0",
+    "ipykernel>=6.29.0"
+]
+
+spatial = [
+    "rasterio>=1.3.9",
+    "shapely>=2.0.2",
+    "pysal>=23.7",
+    "spaghetti>=1.7.4"
+]
+
+genomics = [
+    "pysam>=0.22.0",
+    "scikit-bio>=0.5.9",
+    "dendropy>=4.6.1"
+]
+
+ml = [
+    "torch>=2.2.0",
+    "tensorflow>=2.15.0",
+    "xgboost>=2.0.3",
+    "lightgbm>=4.3.0"
+]
+
+viz = [
+    "plotly>=5.18.0",
+    "bokeh>=3.3.4",
+    "altair>=5.2.0",
+    "holoviews>=1.18.1"
+]
 
 [build-system]
-requires = ["maturin>=1.3"]
+requires = ["maturin>=1.4.0"]
 build-backend = "maturin"
 
 [tool.maturin]
 bindings = "pyo3"
-features = []
-
-[tool.uv]
-dependency-resolution = "latest"
+features = ["extension-module"]
+python-source = "python"
+sdist-include = ["Cargo.toml", "Cargo.lock", "src/**/*"]
 
 [tool.ruff]
 line-length = 88
-target-version = "py38"
-select = ["E", "F", "I"]
+target-version = "py311"
+select = ["E", "F", "I", "N", "B", "W", "C", "D"]
+ignore = ["D100", "D104"]
+
+[tool.ruff.per-file-ignores]
+"tests/*" = ["D"]
+"examples/*" = ["D"]
+
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+include = '\.pyi?$'
+extend-exclude = '''
+# A regex preceded with ^/ will apply only to files and directories
+# in the root of the project.
+^/tests/data/
+'''
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+check_untyped_defs = true
+ignore_missing_imports = true
+exclude = [
+    "tests/data/",
+    "examples/"
+]
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "-ra -q"
+addopts = "-ra -q --doctest-modules"
 testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::UserWarning"
+]
