@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+env/
+.uv/
+.ipynb_checkpoints
+/target/
+Cargo.lock
+*.egg-info/
+dist/
+build/
+.vscode/
+.notebooks/
+*.ipynb_checkpoints/
+.DS_Store
+Thumbs.db

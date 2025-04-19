@@ -1,0 +1,29 @@
+[project]
+name = "epirust"
+version = "0.1.0"
+description = "Rust-based epidemiological analysis toolkit"
+authors = [{ name = "Rob Ford", email = "you@example.com" }]
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.8"
+
+[build-system]
+requires = ["maturin>=1.3"]
+build-backend = "maturin"
+
+[tool.maturin]
+bindings = "pyo3"
+features = []
+
+[tool.uv]
+dependency-resolution = "latest"
+
+[tool.ruff]
+line-length = 88
+target-version = "py38"
+select = ["E", "F", "I"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = ["tests"]
